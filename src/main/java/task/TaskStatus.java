@@ -1,4 +1,4 @@
-package enums;
+package task;
 
 // Перечисление для статусов задач
 public enum TaskStatus {

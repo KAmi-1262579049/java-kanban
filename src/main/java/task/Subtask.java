@@ -1,47 +1,42 @@
 package task;
 
-import enums.TaskStatus;
-
-// Класс подзадачи - наследуется от Task
+// Класс Subtask, представляющий подзадачу в системе трекера задач
 public class Subtask extends Task {
-    private Integer epicId; // id эпика, к которому относится подзадача
+    private int epicId; // Поле для хранения идентификатора эпика, к которому принадлежит подзадача
 
-    // Конструктор для создания новой подзадачи
-    public Subtask(String name, String description, TaskStatus status, Integer epicId) {
-        super(name, description, status);
+    // Конструктор для создания новой подзадачи без указания id
+    public Subtask(String name, String description, int epicId) {
+        super(name, description);
         this.epicId = epicId;
+        this.type = TaskType.SUBTASK;
     }
 
-    // Конструктор для создания подзадачи с заданными параметрами
-    public Subtask(Integer id, String name, String description, TaskStatus status, Integer epicId) {
+    // Конструктор для создания подзадачи с известным id
+    public Subtask(int id, String name, String description, TaskStatus status, int epicId) {
         super(id, name, description, status);
         this.epicId = epicId;
+        this.type = TaskType.SUBTASK;
     }
 
-    // Конструктор копирования
-    public Subtask(Subtask subtask) {
-        super(subtask);
-        this.epicId = subtask.epicId;
-    }
-
-    // Геттер для id эпика
-    public Integer getEpicId() {
+    // Геттер для поля epicId
+    public int getEpicId() {
         return epicId;
     }
 
-    // Сеттер для id эпика
-    public void setEpicId(Integer epicId) {
+    // Сеттер для поля epicId
+    public void setEpicId(int epicId) {
         this.epicId = epicId;
     }
 
-    // Переопределение метода toString
+    // Переопределение метода toString()
     @Override
     public String toString() {
         return "Subtask{" +
-                "id=" + getId() +
-                ", name='" + getName() + '\'' +
-                ", description='" + getDescription() + '\'' +
-                ", status=" + getStatus() +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", status=" + status +
+                ", type=" + type +
                 ", epicId=" + epicId +
                 '}';
     }

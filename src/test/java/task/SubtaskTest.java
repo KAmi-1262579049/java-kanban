@@ -1,74 +1,112 @@
 package task;
 
-import enums.TaskStatus;
-
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
-// Тестовый класс для Subtask
+// Класс для тестирования класса Subtask
 class SubtaskTest {
 
-    // Тест (подзадачи наследуют логику сравнения по id от Task)
+    // Тест проверяет равенство подзадач по id
     @Test
-    void subtaskInheritsTaskEquality() {
-        Subtask subtask1 = new Subtask(1, "Subtask 1", "Description 1", TaskStatus.NEW, 10);
-        Subtask subtask2 = new Subtask(1, "Subtask 2", "Description 2", TaskStatus.DONE, 20);
+    void testSubtaskEqualityById() {
+        Subtask subtask1 = new Subtask(1, "Subtask 1", "Description 1",
+                TaskStatus.NEW, 100);
+        Subtask subtask2 = new Subtask(1, "Subtask 2", "Description 2",
+                TaskStatus.DONE, 200);
 
         assertEquals(subtask1, subtask2, "Подзадачи с одинаковым id должны быть равны");
+        assertEquals(subtask1.hashCode(), subtask2.hashCode(),
+                "Хэш-коды подзадач с одинаковым id должны совпадать");
     }
 
-    // Тест (подзадача не может быть своим же эпиком)
+    // Тест проверяет, что Task и Subtask не равны даже с одинаковым id
     @Test
-    void subtaskCannotBeItsOwnEpic() {
-        Subtask subtask = new Subtask(1, "Subtask", "Description", TaskStatus.NEW, 2);
+    void testSubtaskNotEqualToTaskWithSameId() {
+        Task task = new Task(1, "Task", "Description", TaskStatus.NEW);
+        Subtask subtask = new Subtask(1, "Subtask", "Description",
+                TaskStatus.NEW, 100);
 
-        assertNotEquals(subtask.getId(), subtask.getEpicId(),
-                "ID подзадачи не должно совпадать с ID её эпика");
+        assertNotEquals(task, subtask);
+        assertNotEquals(subtask, task);
     }
 
-    // Тест (конструктор Subtask должен корректно устанавливать epicId)
+    // Тест проверяет техническую возможность установить epicId равным id подзадачи
     @Test
-    void subtaskConstructorShouldSetEpicId() {
-        Subtask subtask = new Subtask("Subtask", "Description", TaskStatus.NEW, 100);
+    void testSubtaskCanSetEpicIdToItsOwnId() {
+        Subtask subtask = new Subtask("Subtask", "Description", 1);
+        subtask.setId(1);
 
-        assertEquals(100, subtask.getEpicId(), "epicId должен быть установлен");
+        subtask.setEpicId(subtask.getId());
+
+        assertEquals(subtask.getId(), subtask.getEpicId());
     }
 
-    // Тест (метод setEpicId должен корректно изменять epicId подзадачи)
+    // Тест проверяет наследование Subtask от Task
     @Test
-    void setEpicIdShouldWorkCorrectly() {
-        Subtask subtask = new Subtask("Subtask", "Description", TaskStatus.NEW, 100);
+    void testSubtaskInheritance() {
+        Subtask subtask = new Subtask("Test", "Description", 1);
 
-        subtask.setEpicId(200);
-
-        assertEquals(200, subtask.getEpicId(), "epicId должен быть изменен");
+        assertTrue(subtask instanceof Task);
+        assertEquals(TaskType.SUBTASK, subtask.getType());
     }
 
-    // Тест (конструктор копирования Subtask должен копировать все поля)
+    // Тест проверяет работу конструктора с параметрами
     @Test
-    void subtaskCopyConstructorShouldCopyAllFields() {
-        Subtask original = new Subtask(1, "Subtask", "Description", TaskStatus.IN_PROGRESS, 100);
-        Subtask copy = new Subtask(original);
+    void testSubtaskConstructorWithId() {
+        Subtask subtask = new Subtask(1, "Subtask", "Description",
+                TaskStatus.IN_PROGRESS, 10);
 
-        assertEquals(original.getId(), copy.getId(), "ID должен быть скопирован");
-        assertEquals(original.getName(), copy.getName(), "Имя должно быть скопировано");
-        assertEquals(original.getDescription(), copy.getDescription(), "Описание должно быть скопировано");
-        assertEquals(original.getStatus(), copy.getStatus(), "Статус должен быть скопирован");
-        assertEquals(original.getEpicId(), copy.getEpicId(), "epicId должен быть скопирован");
-        assertNotSame(original, copy, "Копия должна быть отдельным объектом");
+        assertEquals(1, subtask.getId());
+        assertEquals("Subtask", subtask.getName());
+        assertEquals("Description", subtask.getDescription());
+        assertEquals(TaskStatus.IN_PROGRESS, subtask.getStatus());
+        assertEquals(10, subtask.getEpicId());
+        assertEquals(TaskType.SUBTASK, subtask.getType());
     }
 
-    // Тест (метод toString() у Subtask должен содержать epicId)
+    // Тест проверяет работу конструктора без id
     @Test
-    void subtaskToStringShouldContainEpicId() {
-        Subtask subtask = new Subtask(1, "Test Subtask", "Test Description",
-                TaskStatus.IN_PROGRESS, 100);
-        String subtaskString = subtask.toString();
+    void testSubtaskConstructorWithoutId() {
+        Subtask subtask = new Subtask("Subtask", "Description", 10);
 
-        assertTrue(subtaskString.contains("id=1"), "Должен содержать ID");
-        assertTrue(subtaskString.contains("name='Test Subtask'"), "Должен содержать имя");
-        assertTrue(subtaskString.contains("description='Test Description'"), "Должен содержать описание");
-        assertTrue(subtaskString.contains("status=IN_PROGRESS"), "Должен содержать статус");
-        assertTrue(subtaskString.contains("epicId=100"), "Должен содержать epicId");
+        assertEquals(0, subtask.getId()); // ID не установлен
+        assertEquals("Subtask", subtask.getName());
+        assertEquals("Description", subtask.getDescription());
+        assertEquals(TaskStatus.NEW, subtask.getStatus()); // Статус по умолчанию
+        assertEquals(10, subtask.getEpicId());
+        assertEquals(TaskType.SUBTASK, subtask.getType());
+    }
+
+    // Тест проверяет работу сеттеров
+    @Test
+    void testSubtaskSetters() {
+        Subtask subtask = new Subtask("Original", "Original Desc", 1);
+
+        subtask.setId(5);
+        subtask.setName("Updated");
+        subtask.setDescription("Updated Desc");
+        subtask.setStatus(TaskStatus.DONE);
+        subtask.setEpicId(20);
+
+        assertEquals(5, subtask.getId());
+        assertEquals("Updated", subtask.getName());
+        assertEquals("Updated Desc", subtask.getDescription());
+        assertEquals(TaskStatus.DONE, subtask.getStatus());
+        assertEquals(20, subtask.getEpicId());
+    }
+
+    // Тест проверяет форматирование строкового представления подзадачи
+    @Test
+    void testSubtaskToString() {
+        Subtask subtask = new Subtask(1, "Subtask", "Description",
+                TaskStatus.NEW, 10);
+        String result = subtask.toString();
+
+        assertTrue(result.contains("id=1"));
+        assertTrue(result.contains("name='Subtask'"));
+        assertTrue(result.contains("description='Description'"));
+        assertTrue(result.contains("status=NEW"));
+        assertTrue(result.contains("type=SUBTASK"));
+        assertTrue(result.contains("epicId=10"));
     }
 }
