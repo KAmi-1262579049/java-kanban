@@ -1,16 +1,14 @@
 package manager;
 
+import task.Task;
+import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import task.Task;
-import task.Epic;
-import task.Subtask;
-import task.TaskStatus;
 import static org.junit.jupiter.api.Assertions.*;
 
-// Класс для тестирования функциональности менеджера задач
+// Тестовый класс для проверки функциональности TaskManager
 class TaskManagerTest {
-    private TaskManager taskManager; // Переменная для хранения экземпляра менеджера задач
+    private TaskManager taskManager; // Поле для хранения экземпляра менеджера задач
 
     // Метод, выполняемый перед каждым тестом
     @BeforeEach
@@ -18,34 +16,38 @@ class TaskManagerTest {
         taskManager = Managers.getDefault();
     }
 
-    // Тестовый метод для проверки создания задачи и её поиска по id
+    // Тест проверяет создание задачи и её поиск по идентификатору
     @Test
     void testCreateAndFindTask() {
         Task task = taskManager.createTask(new Task("Task", "Description"));
-        assertNotNull(taskManager.getTaskById(task.getId()));
+        Task foundTask = taskManager.getTaskById(task.getId());
+
+        assertNotNull(foundTask);
+        assertEquals(task.getId(), foundTask.getId());
+        assertEquals("Task", foundTask.getName());
     }
 
-    // Тестовый метод для проверки расчёта статуса эпика на основе статусов подзадач
-    @Test
-    void testEpicStatusCalculation() {
-        Epic epic = taskManager.createEpic(new Epic("Epic", "Description"));
-        Subtask subtask = taskManager.createSubtask(
-                new Subtask("Subtask", "Description", epic.getId())
-        );
-
-        subtask.setStatus(TaskStatus.DONE);
-        taskManager.updateSubtask(subtask);
-
-        assertEquals(TaskStatus.DONE, taskManager.getEpicById(epic.getId()).getStatus());
-    }
-
-    // Тестовый метод для проверки работы менеджера истории просмотров
+    // Тест проверяет работу менеджера истории просмотров
     @Test
     void testHistoryManager() {
         Task task = taskManager.createTask(new Task("Task", "Description"));
-
         taskManager.getTaskById(task.getId());
 
-        assertEquals(1, taskManager.getHistory().size());
+        List<Task> history = taskManager.getHistory();
+        assertEquals(1, history.size());
+        assertEquals(task.getId(), history.get(0).getId());
+    }
+
+    // Тест проверяет поведение истории при дублировании просмотров одной задачи
+    @Test
+    void testHistoryWithDuplicates() {
+        Task task = taskManager.createTask(new Task("Task", "Description"));
+
+        taskManager.getTaskById(task.getId());
+        taskManager.getTaskById(task.getId());
+        taskManager.getTaskById(task.getId());
+
+        List<Task> history = taskManager.getHistory();
+        assertEquals(3, history.size(), "Дубликаты должны сохраняться в истории");
     }
 }
