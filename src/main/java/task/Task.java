@@ -4,13 +4,13 @@ import java.util.Objects;
 
 // Класс, представляющий задачу
 public class Task {
-    protected int id; // Уникальный идентификатор задачи
-    protected String name; // Название задачи
-    protected String description; // Подробное описание задачи
-    protected TaskStatus status; // Текущий статус задачи
-    protected TaskType type; // Тип задачи
+    protected int id; // Поле для хранения уникального идентификатора задачи
+    protected String name; // Поле для хранения названия задачи
+    protected String description; // Поле для хранения подробного описания задачи
+    protected TaskStatus status; // Поле для хранения текущего статуса задачи
+    protected TaskType type; // Поле для хранения типа задачи
 
-    // Конструктор для создания новой задачи (без указания id)
+    // Конструктор для создания новой задачи без указания идентификатора
     public Task(String name, String description) {
         this.name = name;
         this.description = description;
@@ -18,7 +18,7 @@ public class Task {
         this.type = TaskType.TASK;
     }
 
-    // Конструктор для создания задачи с известным id
+    // Конструктор для создания задачи с известным идентификатором
     public Task(int id, String name, String description, TaskStatus status) {
         this.id = id;
         this.name = name;
@@ -27,57 +27,57 @@ public class Task {
         this.type = TaskType.TASK;
     }
 
-    // Геттер для получения id задачи
+    // Геттер для поля id
     public int getId() {
         return id;
     }
 
-    // Сеттер для установки id задачи
+    // Сеттер для поля id
     public void setId(int id) {
         this.id = id;
     }
 
-    // Геттер для получения названия задачи
+    // Геттер для поля name
     public String getName() {
         return name;
     }
 
-    // Сеттер для изменения названия задачи
+    // Сеттер для поля name
     public void setName(String name) {
         this.name = name;
     }
 
-    // Геттер для получения описания задачи
+    // Геттер для поля description
     public String getDescription() {
         return description;
     }
 
-    // Сеттер для изменения описания задачи
+    // Сеттер для поля description
     public void setDescription(String description) {
         this.description = description;
     }
 
-    // Геттер для получения текущего статуса задачи
+    // Геттер для поля status
     public TaskStatus getStatus() {
         return status;
     }
 
-    // Сеттер для изменения статуса задачи
+    // Сеттер для поля status
     public void setStatus(TaskStatus status) {
         this.status = status;
     }
 
-    // Геттер для получения типа задачи
+    // Геттер для поля type
     public TaskType getType() {
         return type;
     }
 
-    // Сеттер для изменения типа задачи
+    // Сеттер для поля type
     public void setType(TaskType type) {
         this.type = type;
     }
 
-    // Переопределение метода equals
+    // Переопределение метода equals()
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -86,13 +86,13 @@ public class Task {
         return id == task.id;
     }
 
-    // Переопределение метода hashCode
+    // Переопределение метода hashCode()
     @Override
     public int hashCode() {
         return Objects.hash(id);
     }
 
-    // Переопределение метода toString
+    // Переопределение метода toString()
     @Override
     public String toString() {
         return "Task{" +
