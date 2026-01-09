@@ -2,7 +2,7 @@ package task;
 
 // Класс Subtask, представляющий подзадачу в системе трекера задач
 public class Subtask extends Task {
-    private int epicId; // Поле для хранения идентификатора эпика, к которому принадлежит подзадача
+    private int epicId; // Поле для хранения идентификатора эпика
 
     // Конструктор для создания новой подзадачи без указания id
     public Subtask(String name, String description, int epicId) {
