@@ -2,29 +2,16 @@ package manager;
 
 import task.Task;
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.List;
 
 // Класс реализует интерфейс HistoryManager для хранения истории просмотров задач
 public class InMemoryHistoryManager implements HistoryManager {
-    // Класс Node представляет узел двусвязного списка
-    private static class Node {
-        Task task;  // Поле для хранения задачи
-        Node prev;  // Ссылка на предыдущий узел в списке
-        Node next;  // Ссылка на следующий узел в списке
-
-        // Конструктор узла
-        Node(Task task) {
-            this.task = task;
-        }
-    }
-
-    private final HashMap<Integer, Node> historyMap; // Хэш-таблица для быстрого доступа к узлам по id задачи
-    private Node head; // Указатель на первый узел списка
-    private Node tail; // Указатель на последний узел списка
+    private final List<Task> history; // Хранение истории просмотров
+    private static final int MAX_HISTORY_SIZE = 10; // Максимальный размер истории согласно ТЗ
 
     // Конструктор класса
     public InMemoryHistoryManager() {
-        this.historyMap = new HashMap<>();
+        this.history = new ArrayList<>();
     }
 
     // Метод добавления задачи в историю
@@ -34,58 +21,27 @@ public class InMemoryHistoryManager implements HistoryManager {
             return;
         }
 
-        remove(task.getId());
+        history.add(task);
 
-        Node newNode = new Node(task);
-        linkLast(newNode);
-        historyMap.put(task.getId(), newNode);
+        if (history.size() > MAX_HISTORY_SIZE) {
+            history.remove(0);
+        }
     }
 
-    // Метод удаления задачи из истории по id
+    // Метод удаления задачи из истории (добавлен, так как есть в интерфейсе)
     @Override
     public void remove(int id) {
-        Node node = historyMap.remove(id);
-        if (node != null) {
-            removeNode(node);
+        for (int i = 0; i < history.size(); i++) {
+            if (history.get(i).getId() == id) {
+                history.remove(i);
+                i--;
+            }
         }
     }
 
     // Метод получения истории просмотров
     @Override
-    public ArrayList<Task> getHistory() {
-        ArrayList<Task> result = new ArrayList<>();
-        Node current = head;
-        while (current != null) {
-            result.add(current.task);
-            current = current.next;
-        }
-        return result;
-    }
-
-    // Метод для добавления узла в конец списка
-    private void linkLast(Node node) {
-        if (head == null) {
-            head = node;
-            tail = node;
-        } else {
-            tail.next = node;
-            node.prev = tail;
-            tail = node;
-        }
-    }
-
-    // Метод для удаления узла из списка
-    private void removeNode(Node node) {
-        if (node.prev != null) {
-            node.prev.next = node.next;
-        } else {
-            head = node.next;
-        }
-
-        if (node.next != null) {
-            node.next.prev = node.prev;
-        } else {
-            tail = node.prev;
-        }
+    public List<Task> getHistory() {
+        return new ArrayList<>(history);
     }
 }
