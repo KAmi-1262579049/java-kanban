@@ -2,6 +2,11 @@ package manager;
 
 // Класс для создания и управления менеджерами задач
 public class Managers {
+
+    // Приватный конструктор класса
+    private Managers() {
+    }
+
     // Метод для получения реализации менеджера задач по умолчанию
     public static TaskManager getDefault() {
         return new InMemoryTaskManager();
