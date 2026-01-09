@@ -4,7 +4,7 @@ import task.Task;
 import task.TaskStatus;
 import task.Epic;
 import task.Subtask;
-import java.util.ArrayList;
+import java.util.List;
 
 // Главный класс приложения для тестирования трекера задач
 public class Main {
@@ -38,7 +38,7 @@ public class Main {
         System.out.println("Создана подзадача 1: " + createdSubtask1);
         System.out.println("Создана подзадача 2: " + createdSubtask2);
 
-        Epic epic2 = new Epic("Эпик 2", "Описание эпика 2");
+        Epic epic2 = new Epic("Эпик 2", "Описание эпика 2"); // ИСПРАВЛЕНО: правильный конструктор
         Epic createdEpic2 = taskManager.createEpic(epic2);
         System.out.println("\nСоздан эпик 2: " + createdEpic2);
 
@@ -57,6 +57,7 @@ public class Main {
 
         createdSubtask1.setStatus(TaskStatus.IN_PROGRESS);
         taskManager.updateSubtask(createdSubtask1);
+
         createdSubtask2.setStatus(TaskStatus.DONE);
         taskManager.updateSubtask(createdSubtask2);
 
@@ -76,11 +77,16 @@ public class Main {
         taskManager.getEpicById(createdEpic2.getId());
         taskManager.getSubtaskById(createdSubtask3.getId());
 
-        System.out.println("\nИстория просмотров:");
-        ArrayList<Task> history = taskManager.getHistory();
+        for (int i = 0; i < 5; i++) {
+            taskManager.getTaskById(createdTask1.getId());
+        }
+
+        System.out.println("\nИстория просмотров (должно быть не более 10 элементов):");
+        List<Task> history = taskManager.getHistory();
         for (int i = 0; i < history.size(); i++) {
             System.out.println((i + 1) + ". " + history.get(i));
         }
+        System.out.println("Всего в истории: " + history.size() + " элементов");
 
         // Тест 6: Удаление задач
         System.out.println("\n=== ТЕСТ 6: Удаление задач ===");
@@ -100,7 +106,6 @@ public class Main {
         System.out.println("\n=== ТЕСТ 7: Удаление всех задач ===");
         taskManager.deleteAllTasks();
         taskManager.deleteAllEpics();
-        taskManager.deleteAllSubtasks();
 
         System.out.println("\nПосле удаления всех задач:");
         System.out.println("Обычных задач: " + taskManager.getAllTasks().size());
@@ -109,24 +114,44 @@ public class Main {
         System.out.println("Задач в истории: " + taskManager.getHistory().size());
     }
 
+    // Вспомогательный метод для вывода всех задач в удобном формате
     private static void printAllTasks(TaskManager manager) {
         System.out.println("\n=== Все задачи ===");
-        for (Task task : manager.getAllTasks()) {
-            System.out.println(task);
+        List<Task> tasks = manager.getAllTasks();
+        if (tasks.isEmpty()) {
+            System.out.println("Нет обычных задач");
+        } else {
+            for (Task task : tasks) {
+                System.out.println(task);
+            }
         }
 
         System.out.println("\n=== Все эпики ===");
-        for (Epic epic : manager.getAllEpics()) {
-            System.out.println(epic);
-            ArrayList<Subtask> epicSubtasks = manager.getSubtasksByEpicId(epic.getId());
-            for (Subtask subtask : epicSubtasks) {
-                System.out.println("  -> " + subtask);
+        List<Epic> epics = manager.getAllEpics();
+        if (epics.isEmpty()) {
+            System.out.println("Нет эпиков");
+        } else {
+            for (Epic epic : epics) {
+                System.out.println(epic);
+                List<Subtask> epicSubtasks = manager.getSubtasksByEpicId(epic.getId());
+                if (epicSubtasks.isEmpty()) {
+                    System.out.println("  -> Нет подзадач");
+                } else {
+                    for (Subtask subtask : epicSubtasks) {
+                        System.out.println("  -> " + subtask);
+                    }
+                }
             }
         }
 
         System.out.println("\n=== Все подзадачи ===");
-        for (Subtask subtask : manager.getAllSubtasks()) {
-            System.out.println(subtask);
+        List<Subtask> subtasks = manager.getAllSubtasks();
+        if (subtasks.isEmpty()) {
+            System.out.println("Нет подзадач");
+        } else {
+            for (Subtask subtask : subtasks) {
+                System.out.println(subtask);
+            }
         }
     }
 }
