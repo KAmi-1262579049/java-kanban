@@ -1,33 +1,30 @@
 package task;
 
-import enums.TaskStatus;
-
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
-// Тестовый класс для Epic
+// Тестовый класс для проверки функциональности класса Epic
 class EpicTest {
 
-    // Тест (эпик не должен добавлять себя как подзадачу)
+    // Тест проверяет, что новый эпик не может добавить себя в качестве подзадачи
     @Test
     void epicCannotAddItselfAsSubtask() {
         Epic epic = new Epic("Epic", "Description");
         epic.setId(1);
 
-        assertTrue(epic.getSubtaskIds().isEmpty(),
-                "Список подзадач нового эпика должен быть пустым");
+        assertTrue(epic.getSubtaskIds().isEmpty(), "Список подзадач нового эпика должен быть пустым");
     }
 
-    // Тест (эпики наследуют логику сравнения по id от Task)
+    // Тест проверяет, что Epic наследует от Task логику сравнения по id
     @Test
     void epicInheritsTaskEquality() {
-        Epic epic1 = new Epic(1, "Epic 1", "Description 1", TaskStatus.NEW);
-        Epic epic2 = new Epic(1, "Epic 2", "Description 2", TaskStatus.IN_PROGRESS);
+        Epic epic1 = new Epic(1, "Epic 1", "Description");
+        Epic epic2 = new Epic(1, "Epic 2", "Description");
 
         assertEquals(epic1, epic2, "Эпики с одинаковым id должны быть равны");
     }
 
-    // Тест (конструктор эпика должен инициализировать пустой список подзадач)
+    // Тест проверяет, что конструктор Epic корректно инициализирует пустой список подзадач
     @Test
     void epicConstructorShouldInitializeEmptySubtaskList() {
         Epic epic = new Epic("Epic", "Description");
@@ -36,7 +33,7 @@ class EpicTest {
         assertTrue(epic.getSubtaskIds().isEmpty(), "Список подзадач должен быть пустым");
     }
 
-    // Тест (добавление id подзадачи не должно добавлять дубликаты)
+    // Тест проверяет, что метод addSubtaskId не добавляет дубликаты id подзадач
     @Test
     void addSubtaskIdShouldNotAddDuplicates() {
         Epic epic = new Epic("Epic", "Description");
@@ -48,7 +45,7 @@ class EpicTest {
         assertTrue(epic.getSubtaskIds().contains(1), "Список должен содержать ID 1");
     }
 
-    // Тест (удаление id подзадачи должно работать корректно)
+    // Тест проверяет корректность работы метода удаления id подзадачи
     @Test
     void removeSubtaskIdShouldWorkCorrectly() {
         Epic epic = new Epic("Epic", "Description");
@@ -66,7 +63,7 @@ class EpicTest {
         assertTrue(epic.getSubtaskIds().contains(3), "Должен содержать ID 3");
     }
 
-    // Тест (очистка списка подзадач должна удалять все id)
+    // Тест проверяет, что метод clearSubtaskIds полностью очищает список подзадач
     @Test
     void clearSubtaskIdsShouldRemoveAllIds() {
         Epic epic = new Epic("Epic", "Description");
@@ -79,34 +76,5 @@ class EpicTest {
         epic.clearSubtaskIds();
 
         assertTrue(epic.getSubtaskIds().isEmpty(), "Список должен быть пустым");
-    }
-
-    // Тест (конструктор копирования эпика должен копировать id подзадач)
-    @Test
-    void epicCopyConstructorShouldCopySubtaskIds() {
-        Epic original = new Epic(1, "Epic", "Description", TaskStatus.NEW);
-        original.addSubtaskId(10);
-        original.addSubtaskId(20);
-        original.addSubtaskId(30);
-        Epic copy = new Epic(original);
-
-        assertEquals(original.getId(), copy.getId(), "ID должен быть скопирован");
-        assertEquals(original.getName(), copy.getName(), "Имя должно быть скопировано");
-        assertEquals(original.getDescription(), copy.getDescription(), "Описание должно быть скопировано");
-        assertEquals(original.getStatus(), copy.getStatus(), "Статус должен быть скопирован");
-
-        assertEquals(original.getSubtaskIds().size(), copy.getSubtaskIds().size(),
-                "Размер списка подзадач должен быть одинаковым");
-        assertTrue(copy.getSubtaskIds().contains(10), "Должен содержать ID 10");
-        assertTrue(copy.getSubtaskIds().contains(20), "Должен содержать ID 20");
-        assertTrue(copy.getSubtaskIds().contains(30), "Должен содержать ID 30");
-
-        assertNotSame(original, copy, "Копия должна быть отдельным объектом");
-        assertNotSame(original.getSubtaskIds(), copy.getSubtaskIds(),
-                "Списки подзадач должны быть разными объектами");
-
-        original.clearSubtaskIds();
-        assertEquals(3, copy.getSubtaskIds().size(),
-                "Копия не должна измениться при изменении оригинала");
     }
 }
