@@ -1,7 +1,7 @@
 package manager;
 
 import task.Task;
-import java.util.ArrayList;
+import java.util.List;
 
 // Интерфейс для управления историей просмотров задач
 public interface HistoryManager {
@@ -10,5 +10,5 @@ public interface HistoryManager {
     // Метод для удаления задачи из истории по её идентификатору
     void remove(int id);
     // Возвращение списка всех задач из истории просмотров
-    ArrayList<Task> getHistory();
+    List<Task> getHistory();
 }
