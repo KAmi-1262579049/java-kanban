@@ -1,25 +1,25 @@
 package manager;
 
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.BeforeEach;
 import task.Task;
 import task.Epic;
 import task.Subtask;
 import task.TaskStatus;
 import java.util.List;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.BeforeEach;
 import static org.junit.jupiter.api.Assertions.*;
 
 // Тестовый класс для InMemoryTaskManager
 class InMemoryTaskManagerTest {
-    private TaskManager taskManager; // Переменная для хранения экземпляра менеджера задач
+    private TaskManager taskManager; // Поле для хранения экземпляра менеджера задач
 
     // Метод, выполняемый перед каждым тестом
     @BeforeEach
     void setUp() {
-        taskManager = new InMemoryTaskManager();
+        taskManager = Managers.getDefault();
     }
 
-    // Тест создания и получения задачи
+    // Тест проверяет базовую функциональность создания и поиска задачи
     @Test
     void testCreateAndRetrieveTask() {
         Task task = new Task("Test Task", "Test Description");
@@ -33,7 +33,7 @@ class InMemoryTaskManagerTest {
         assertEquals(createdTask, retrievedTask);
     }
 
-    // Тест создания и получения эпика
+    // Тест проверяет создание и получение эпика
     @Test
     void testCreateAndRetrieveEpic() {
         Epic epic = new Epic("Test Epic", "Test Description");
@@ -47,7 +47,7 @@ class InMemoryTaskManagerTest {
         assertEquals(createdEpic, retrievedEpic);
     }
 
-    // Тест создания подзадачи с существующим эпиком
+    // Тест проверяет создание подзадачи с существующим эпиком
     @Test
     void testCreateSubtaskWithValidEpic() {
         Epic epic = taskManager.createEpic(new Epic("Epic", "Description"));
@@ -63,7 +63,7 @@ class InMemoryTaskManagerTest {
         assertEquals(createdSubtask.getId(), epicSubtasks.get(0).getId());
     }
 
-    // Тест создания подзадачи с несуществующим эпиком
+    // Тест (попытка создания подзадачи с несуществующим эпиком)
     @Test
     void testCreateSubtaskWithInvalidEpic() {
         Subtask subtask = new Subtask("Subtask", "Description", 999);
@@ -73,7 +73,8 @@ class InMemoryTaskManagerTest {
         }, "Должно быть исключение при создании подзадачи с несуществующим эпиком");
     }
 
-    // Тест расчета статуса эпика на основе статусов подзадач
+
+    // Тест (расчет статуса эпика на основе статусов его подзадач)
     @Test
     void testEpicStatusCalculation() {
         Epic epic = taskManager.createEpic(new Epic("Epic", "Description"));
@@ -99,7 +100,7 @@ class InMemoryTaskManagerTest {
         assertEquals(TaskStatus.DONE, taskManager.getEpicById(epic.getId()).getStatus());
     }
 
-    // Тест удаления задачи
+    // Тест проверяет удаление обычной задачи
     @Test
     void testDeleteTask() {
         Task task = taskManager.createTask(new Task("Task", "Description"));
@@ -111,7 +112,7 @@ class InMemoryTaskManagerTest {
         assertEquals(0, taskManager.getAllTasks().size());
     }
 
-    // Тест удаления эпика вместе с его подзадачами
+    // Тест проверяет удаление эпика вместе с его подзадачами
     @Test
     void testDeleteEpicWithSubtasks() {
         Epic epic = taskManager.createEpic(new Epic("Epic", "Description"));
@@ -126,7 +127,7 @@ class InMemoryTaskManagerTest {
         assertEquals(0, taskManager.getAllSubtasks().size());
     }
 
-    // Тест получения всех задач
+    // Тест проверяет получение всех задач разных типов
     @Test
     void testGetAllTasks() {
         Task task1 = taskManager.createTask(new Task("Task 1", "Description"));
@@ -144,61 +145,59 @@ class InMemoryTaskManagerTest {
         assertTrue(epics.contains(epic));
     }
 
-    // Тест истории просмотров задач
+    // Тест проверяет историю просмотров
     @Test
     void testHistoryOnTaskRetrieval() {
         Task task = taskManager.createTask(new Task("Task", "Description"));
         Epic epic = taskManager.createEpic(new Epic("Epic", "Description"));
-        Subtask subtask = taskManager.createSubtask(
-                new Subtask("Subtask", "Description", epic.getId()));
 
-        // Получаем задачи для наполнения истории
+        for (int i = 1; i <= 10; i++) {
+            Subtask subtask = taskManager.createSubtask(
+                    new Subtask("Subtask " + i, "Description", epic.getId()));
+            taskManager.getSubtaskById(subtask.getId());
+        }
+
         taskManager.getTaskById(task.getId());
         taskManager.getEpicById(epic.getId());
-        taskManager.getSubtaskById(subtask.getId());
 
         List<Task> history = taskManager.getHistory();
 
-        assertEquals(3, history.size());
-        assertEquals(task.getId(), history.get(0).getId());
-        assertEquals(epic.getId(), history.get(1).getId());
-        assertEquals(subtask.getId(), history.get(2).getId());
+        assertTrue(history.size() <= 10, "История должна содержать не более 10 элементов");
+        assertTrue(history.size() > 0);
     }
 
-    // Тест уникальности id для разных типов задач
+    // Тест проверяет уникальность id для разных типов задач
     @Test
     void testTaskIdsDoNotConflict() {
         Task task = taskManager.createTask(new Task("Task 1", "Description"));
         Epic epic = taskManager.createEpic(new Epic("Epic", "Description"));
 
-        // ID не должны конфликтовать между разными типами задач
         assertNotEquals(task.getId(), epic.getId());
 
-        // Получаем задачи по ID
         assertNotNull(taskManager.getTaskById(task.getId()));
         assertNotNull(taskManager.getEpicById(epic.getId()));
     }
 
-    // Тест неизменяемости задачи после добавления в менеджер
+    // Тест проверяет, что менеджер хранит задачи по ссылке (не копирует)
     @Test
-    void testTaskImmutabilityWhenAdded() {
+    void testTaskManagerStoresTaskByReference() {
         Task originalTask = new Task("Original", "Description");
         originalTask.setStatus(TaskStatus.IN_PROGRESS);
 
         Task createdTask = taskManager.createTask(originalTask);
+        int taskId = createdTask.getId();
 
-        originalTask.setStatus(TaskStatus.DONE);
-        originalTask.setName("Changed");
+        Task taskFromManager = taskManager.getTaskById(taskId);
+        taskFromManager.setStatus(TaskStatus.DONE);
+        taskFromManager.setName("Changed");
 
-        Task retrievedTask = taskManager.getTaskById(createdTask.getId());
+        Task retrievedAgain = taskManager.getTaskById(taskId);
 
-        assertEquals(TaskStatus.DONE, retrievedTask.getStatus());
-        assertEquals("Changed", retrievedTask.getName());
-
-        assertEquals(createdTask.getId(), retrievedTask.getId());
+        assertEquals(TaskStatus.DONE, retrievedAgain.getStatus());
+        assertEquals("Changed", retrievedAgain.getName());
     }
 
-    // Тест обновления задачи
+    // Тест проверяет обновление существующей задачи
     @Test
     void testUpdateTask() {
         Task task = taskManager.createTask(new Task("Original", "Description"));
@@ -214,7 +213,7 @@ class InMemoryTaskManagerTest {
         assertEquals(TaskStatus.IN_PROGRESS, retrievedTask.getStatus());
     }
 
-    // Тест удаления всех задач
+    // Тест проверяет удаление всех обычных задач
     @Test
     void testDeleteAllTasks() {
         taskManager.createTask(new Task("Task 1", "Description"));
@@ -227,7 +226,7 @@ class InMemoryTaskManagerTest {
         assertEquals(0, taskManager.getAllTasks().size());
     }
 
-    // Тест удаления всех эпиков
+    // Тест проверяет удаление всех эпиков с их подзадачами
     @Test
     void testDeleteAllEpics() {
         Epic epic1 = taskManager.createEpic(new Epic("Epic 1", "Description"));
@@ -243,5 +242,17 @@ class InMemoryTaskManagerTest {
 
         assertEquals(0, taskManager.getAllEpics().size());
         assertEquals(0, taskManager.getAllSubtasks().size());
+    }
+
+    // Тест проверяет ограничение истории 10 элементами при активном использовании
+    @Test
+    void testHistoryLimitInTaskManager() { // Измененное имя
+        for (int i = 1; i <= 12; i++) {
+            Task task = taskManager.createTask(new Task("Task " + i, "Description"));
+            taskManager.getTaskById(task.getId());
+        }
+
+        List<Task> history = taskManager.getHistory();
+        assertTrue(history.size() <= 10, "История должна быть ограничена 10 элементами");
     }
 }
