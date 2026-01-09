@@ -3,9 +3,9 @@ package task;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
-// Тестовый класс для проверки класса Task
+// Тестовый класс для проверки функциональности класса Task
 class TaskTest {
-    // Тест проверяет равенство задач с одинаковым id
+    // Тест, проверяющий равенство задач с одинаковым id
     @Test
     void testTasksWithSameIdAreEqual() {
         Task task1 = new Task(1, "Task 1", "Description 1", TaskStatus.NEW);
@@ -14,7 +14,7 @@ class TaskTest {
         assertEquals(task1, task2);
     }
 
-    // Тест проверяет концепцию "иммутабельности" задач при сравнении
+    // Тест, проверяющий концепцию "иммутабельности" при сравнении задач
     @Test
     void testTaskImmutability() {
         Task original = new Task("Original", "Description");
