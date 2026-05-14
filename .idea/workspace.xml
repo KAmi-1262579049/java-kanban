@@ -4,7 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="3cdc668a-ae3b-4524-afc2-111f9f1b8d6e" name="Changes" comment="" />
+    <list default="true" id="3cdc668a-ae3b-4524-afc2-111f9f1b8d6e" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -12,6 +14,7 @@
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="ROOT_SYNC" value="SYNC" />
   </component>
   <component name="GitHubPullRequestSearchHistory">{
   &quot;lastFilter&quot;: {
@@ -19,12 +22,12 @@
     &quot;assignee&quot;: &quot;KAmi-1262579049&quot;
   }
 }</component>
-  <component name="GithubPullRequestsUISettings"><![CDATA[{
-  "selectedUrlAndAccountId": {
-    "url": "https://github.com/KAmi-1262579049/java-kanban.git",
-    "accountId": "135b712f-72ef-47f3-9ad7-0c24b3597315"
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/KAmi-1262579049/java-kanban.git&quot;,
+    &quot;accountId&quot;: &quot;135b712f-72ef-47f3-9ad7-0c24b3597315&quot;
   }
-}]]></component>
+}</component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 0
 }</component>
@@ -33,35 +36,36 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Application.Main.executor": "Run",
-    "Downloaded.Files.Path.Enabled": "false",
-    "JUnit.EpicTest.executor": "Run",
-    "JUnit.HistoryManagerTest.executor": "Run",
-    "JUnit.HistoryManagerTest.testNoDuplicatesInHistory.executor": "Run",
-    "JUnit.HistoryManagerTest.testUnlimitedHistory.executor": "Run",
-    "JUnit.InMemoryHistoryManagerTest.executor": "Run",
-    "JUnit.InMemoryHistoryManagerTest.testHistoryHasNoSizeLimit.executor": "Run",
-    "JUnit.InMemoryTaskManagerTest.executor": "Run",
-    "JUnit.InMemoryTaskManagerTest.testHistoryOnTaskRetrieval.executor": "Run",
-    "JUnit.InMemoryTaskManagerTest.testHistoryShouldNotHaveDuplicates.executor": "Run",
-    "JUnit.SubtaskTest.executor": "Run",
-    "JUnit.TaskManagerTest.executor": "Run",
-    "JUnit.TaskManagerTest.testHistoryWithDuplicates.executor": "Run",
-    "JUnit.TaskTest.executor": "Run",
-    "ModuleVcsDetector.initialDetectionPerformed": "true",
-    "Repository.Attach.Annotations": "false",
-    "Repository.Attach.JavaDocs": "false",
-    "Repository.Attach.Sources": "false",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "git-widget-placeholder": "java-kanban-sprint6-solution",
-    "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "C:/Users/HYPERPC/Desktop/ИТМО/МАГИСТРАТУРА/JAVA/java-kanban-sprint6-solution"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Application.Main.executor&quot;: &quot;Run&quot;,
+    &quot;Downloaded.Files.Path.Enabled&quot;: &quot;false&quot;,
+    &quot;JUnit.EpicTest.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.HistoryManagerTest.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.HistoryManagerTest.testNoDuplicatesInHistory.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.HistoryManagerTest.testUnlimitedHistory.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.InMemoryHistoryManagerTest.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.InMemoryHistoryManagerTest.testHistoryHasNoSizeLimit.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.InMemoryTaskManagerTest.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.InMemoryTaskManagerTest.testHistoryOnTaskRetrieval.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.InMemoryTaskManagerTest.testHistoryShouldNotHaveDuplicates.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.SubtaskTest.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.TaskManagerTest.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.TaskManagerTest.testHistoryWithDuplicates.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.TaskTest.executor&quot;: &quot;Run&quot;,
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;Repository.Attach.Annotations&quot;: &quot;false&quot;,
+    &quot;Repository.Attach.JavaDocs&quot;: &quot;false&quot;,
+    &quot;Repository.Attach.Sources&quot;: &quot;false&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;feature/full-code-commit&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/HYPERPC/Desktop/ИТМО/МАГИСТРАТУРА/JAVA/java-kanban-sprint6-solution&quot;
   }
-}]]></component>
+}</component>
   <component name="RunManager" selected="Application.Main">
     <configuration name="Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="Main" />
